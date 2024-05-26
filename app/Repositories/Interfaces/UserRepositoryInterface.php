@@ -8,7 +8,6 @@ namespace App\Repositories\Interfaces;
  */
 interface UserRepositoryInterface
 {
-    public function getAllPaginate();
     public function create(array $request);
 
     public function findById(
@@ -16,4 +15,8 @@ interface UserRepositoryInterface
         array $column = ['*'],
         array $relation = []
     );
+    public function update(int $id = 0, array $payload = []);
+    public function delete(int $id = 0);
+    public function forceDelete(int $id = 0);
+    public function pagination(array $column = ['*'], array $condition = [], array $join = [], int $perpage = 20);
 }

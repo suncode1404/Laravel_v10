@@ -15,5 +15,8 @@ interface BaseRepositoryInterface
         array $relation = []
     );
     public function create(array $request);
-
+    public function update(int $id = 0, array $payload = []);
+    public function delete(int $id = 0);
+    public function forceDelete(int $id = 0);
+    
 }

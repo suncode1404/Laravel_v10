@@ -1,4 +1,6 @@
-@include('backend.dashboard.component.breadcrumb', ['title' => $config['seo']['create']['title']])
+@include('backend.dashboard.component.breadcrumb', [
+    'title' => $config['method'] == 'create' ? $config['seo']['create']['title'] : $config['seo']['edit']['title'],
+])
 
 @if ($errors->any())
     <div class="alert alert-danger">
@@ -10,7 +12,7 @@
     </div>
 @endif
 @php
-    $url = $config['method'] == 'create' ? route('user.store') : route('user.update',$user->id);
+    $url = $config['method'] == 'create' ? route('user.store') : route('user.update', $user->id);
 @endphp
 <form action="{{ $url }}" method="post" class="box">
     @csrf
@@ -19,8 +21,10 @@
             <div class="col-lg-5">
                 <div class="panel-head">
                     <div class="panel-title">Thông tin chung</div>
-                    <div class="panel-descriptionb">Nhập thông tin chung của người sử dụng</div>
-                    <p>Lưu ý: Những trường đánh dấu <span class="text-danger">(*)</span> là bắt buộc</p>
+                    <div class="panel-description">
+                        <p>Nhập thông tin chung của người sử dụng</p>
+                        <p>Lưu ý: Những trường đánh dấu <span class="text-danger">(*)</span> là bắt buộc</p>
+                    </div>
                 </div>
             </div>
             <div class="col-lg-7">
@@ -69,7 +73,7 @@
                                 <div class="form-row">
                                     <label for="birthday" class="control-label text-right">Ngày sinh</label>
                                     <input type="date" id="birthday" name="birthday"
-                                        value="{{ old('birthday', $user->birthday ? date('Y-m-d', strtotime($user->birthday)) : '') }}"
+                                        value="{{ old('birthday', isset($user->birthday) ? date('Y-m-d', strtotime($user->birthday)) : '') }}"
                                         class="form-control" autocomplete="off">
                                 </div>
                             </div>

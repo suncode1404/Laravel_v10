@@ -33,6 +33,8 @@ Route::group(['prefix' => 'user'],function() {
     Route::post('store', [UserController::class,'store'])->name('user.store')->middleware('admin');
     Route::get('{id}/edit', [UserController::class,'edit'])->name('user.edit')->where(['id' => '[0-9]+'])->middleware('admin');
     Route::post('{id}/update', [UserController::class,'update'])->name('user.update')->where(['id' => '[0-9]+'])->middleware('admin');
+    Route::get('{id}/delete', [UserController::class,'delete'])->name('user.delete')->where(['id' => '[0-9]+'])->middleware('admin');
+    Route::delete('{id}/destroy', [UserController::class,'destroy'])->name('user.destroy')->where(['id' => '[0-9]+'])->middleware('admin');
 });
         
 //AJAX

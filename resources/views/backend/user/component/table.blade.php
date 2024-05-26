@@ -1,6 +1,6 @@
 <table class="table table-bordered mt20">
     <thead>
-        <tr >
+        <tr>
             <th class="text-center">
                 <input type="checkbox" value="" id="checkAll" class="input-checkbox">
             </th>
@@ -24,11 +24,14 @@
                     <td class="text-center">{{ $user->phone }}</td>
                     <td class="text-center">{{ $user->address }}</td>
                     <td class="text-center">
-                        <input type="checkbox" class="js-switch" checked />
+                        <input type="checkbox" value="{{ $user->publish }}" class="js-switch"
+                            {{ $user->publish == 1 ? 'checked' : '' }} />
                     </td>
                     <td class="text-center">
-                        <a href="{{route('user.edit',$user->id)}}" class="btn btn-success"><i class="fa fa-edit"></i></a>
-                        <a href="" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                        <a href="{{ route('user.edit', $user->id) }}" class="btn btn-success"><i
+                                class="fa fa-edit"></i></a>
+                        <a href="{{ route('user.delete', $user->id) }}" class="btn btn-danger"><i
+                                class="fa fa-trash"></i></a>
                     </td>
                 </tr>
             @endforeach
@@ -37,5 +40,5 @@
     </tbody>
 </table>
 <div class="uk-flex uk-flex-middle">
-    {{$users->links('pagination::bootstrap-4')}}
+    {{ $users->links('pagination::bootstrap-4') }}
 </div>

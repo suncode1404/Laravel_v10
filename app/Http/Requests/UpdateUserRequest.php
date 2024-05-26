@@ -11,7 +11,7 @@ class UpdateUserRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,25 @@ class UpdateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'email' => 'required|string|email|unique:users,email, '.$this->id.'|max:191',
+            'name' => 'required|string',
+            'user_catelogue_id' => 'gt:0',
+        ];
+    }
+    public function messages(): array
+    {
+        return [
+            'email.required' => 'Bạn chưa nhập email',
+            'email.email' => 'Email chưa đúng định dạng. Ví dụ: abc@gmail.com',
+            "email.unique" => "Email đã tồn tại",
+            "email.string" => "Email phải là dạng ký tự",
+            "email.max" => "Độ dài email tối đa 191 ký tự",
+            "name.required" => "Bạn chưa nhập họ tên",
+            "name   .string" => "Họ tên phải là định dạng ký tự",
+            'user_catelogue_id.gt' => 'Bạn chưa nhập vào nhóm thành viên',
+            'password.required' => 'Bạn chưa nhập mật khẩu',
+            're_password.required' => 'Bạn phải nhập vào ô nhập lại mật khẩu',
+            're_password.same' => 'Mật khẩu không khớp',
         ];
     }
 }

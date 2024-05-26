@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Backend;
 
-use App\Http\Controllers\Controller;    
+use App\Http\Controllers\Controller;
 
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Services\Interfaces\UserServiceInterface as UserService;
 use App\Repositories\Interfaces\ProvinceRepositoryInterface as ProvinceRepository;
 use App\Repositories\Interfaces\UserRepositoryInterface as UserRepository;
@@ -64,13 +65,15 @@ class UserController extends Controller
             'provinces'
         ));
     }
-    public function store(StoreUserRequest $request) {
-        if($this->userService->create($request)) {
-            return redirect()->route('user.index')->with('success','Thêm mới bản ghi thành công');
+    public function store(StoreUserRequest $request)
+    {
+        if ($this->userService->create($request)) {
+            return redirect()->route('user.index')->with('success', 'Thêm mới bản ghi thành công');
         }
-        return redirect()->route('user.index')->with('error','Thêm mới bản ghi không thành công. Háy thử lại');
+        return redirect()->route('user.index')->with('error', 'Thêm mới bản ghi không thành công. Háy thử lại');
     }
-    public function edit($id) {
+    public function edit($id)
+    {
         $user = $this->userRepository->findById($id);
         $provinces = $this->provinceRepository->all();
         $template = 'backend.user.store';
@@ -91,7 +94,27 @@ class UserController extends Controller
         ));
     }
 
-    public function update($id) {
-        echo $id;die();
+    public function update($id, UpdateUserRequest $request)
+    {
+        if($this->userService->update($id, $request)) {
+            return redirect()->route('user.index')->with('success','Cập nhập bản ghi thành công');
+        }
+        return redirect()->route('user.index')->with('error','Cập nhập bản ghi không thành công. Hãy thử lại');
+    }
+    public function delete($id) {
+        $user = $this->userRepository->findById($id);
+        $template = 'backend.user.delete';
+        $config['seo'] = config('apps.user');
+        return view('backend.dashboard.layout', compact(
+            'template',
+            'config',
+            'user'
+        ));
+    }
+    public function destroy($id) {
+        if($this->userService->destroy($id)) {
+            return redirect()->route('user.index')->with('success','Xóa bản ghi thành công');
+        }
+        return redirect()->route('user.index')->with('error','Xóa bản ghi không thành công. Hãy thử lại');
     }
 }
