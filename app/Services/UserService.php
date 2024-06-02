@@ -20,16 +20,11 @@ class UserService implements UserServiceInterface
         $this->userRepository = $userRepository;
     }
 
-    public function paginate()
+    public function paginate($request)
     {
-        $users = $this->userRepository->pagination([
-            'id',
-            'email',
-            'phone',
-            'address',
-            'name',
-            'publish'
-        ]);
+        $condition['keyword'] = addslashes($request->input('keyword'));
+        $perPage = $request->integer('perpage');
+        $users = $this->userRepository->pagination($this->select(), $condition, [], ['path' => 'user/index'], $perPage);
         return $users;
     }
     public function create($request)
@@ -49,7 +44,6 @@ class UserService implements UserServiceInterface
             // return false;
         }
     }
-
     public function update($id, $request)
     {
         DB::beginTransaction();
@@ -57,6 +51,42 @@ class UserService implements UserServiceInterface
             $payload = $request->except(['_token', 'send']);
             $payload['birthday'] = $this->convertBirthdayDate($payload['birthday']);
             $user = $this->userRepository->update($id, $payload);
+            DB::commit();
+            return true;
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            echo $th->getMessage();
+            die();
+            // return false;
+        }
+    }
+    public function updateStatus($post = [])
+    {
+        DB::beginTransaction();
+
+        try {
+            $payload = [
+                $post['field'] => (($post['value'] == 1) ? 0 : 1)
+            ];
+            $user = $this->userRepository->update($post['modelId'], $payload);
+            DB::commit();
+            return true;
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            echo $th->getMessage();
+            die();
+            // return false;
+        }
+    }
+    public function updateStatusAll($post = [])
+    {
+        DB::beginTransaction();
+
+        try {
+            $payload = [
+                $post['field'] => $post['value']
+            ];
+            $flag = $this->userRepository->updateByWhereIn('id',$post['id'],$payload);
             DB::commit();
             return true;
         } catch (\Throwable $th) {
@@ -85,5 +115,16 @@ class UserService implements UserServiceInterface
         $carbonDate = Carbon::createFromFormat('Y-m-d', $birthday);
         $birthday = $carbonDate->format('Y-m-d H:i:s');
         return $birthday;
+    }
+    private function select()
+    {
+        return [
+            'id',
+            'email',
+            'phone',
+            'address',
+            'name',
+            'publish'
+        ];
     }
 }

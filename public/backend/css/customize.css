@@ -70,7 +70,14 @@ table strong {
     margin-bottom: 15px;
     font-weight: 700;
     color: #1a1a1a;
-}
+}   
 .panel-description {
     font-size: 15px;
+}
+.active-bg {
+    background: #ffc !important;
+}
+#checkAll,.checkBoxItem {
+    width: 15px;
+    height: 15px;
 }
