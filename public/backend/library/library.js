@@ -5,7 +5,7 @@
     HT.switchery = () => {
         $('.js-switch').each(function () {
             var switchery = new Switchery(this, {
-                color: '#1AB394'
+                color: '#1AB394', size: 'small'
             })
         })
     }
@@ -69,13 +69,19 @@
                     success: function (res) {
                         if (res.flag == true) {
                             let cssActive1 = 'background-color: rgb(26, 179, 148);border-color: rgb(26, 179, 148);box-shadow: rgb(26, 179, 148) 0px 0px 0px 16px inset;transition: border 0.4s ease 0s, box-shadow 0.4s ease 0s, background-color 1.2s ease 0s;'
-
                             let cssActive2 = 'left: 20px; background-color: rgb(255, 255, 255);transition: background-color 0.4s ease 0s, left 0.2s ease 0s;'
-                            if (option.value == 1) {
-                                for (let i = 0; i < id.length; i++) {
+
+                            let cssUnActive = 'background-color: rgb(255, 255, 255);border-color: rgb(223, 223, 223);box-shadow: rgb(223, 223, 223) 0px 0px 0px 0px inset;transition: border 0.4s ease 0s, box-shadow 0.4s ease 0s, background-color 1.2s ease 0s;'
+                            let cssUnActive2 = 'left: 0px;transition: background-color 0.4s ease 0s, left 0.2s ease 0s;'
+
+                            for (let i = 0; i < id.length; i++) {
+                                if (option.value == 2) {
                                     $('.js-switch-' + id[i]).find('span.switchery').attr('style', cssActive1).find('small').attr('style', cssActive2)
+                                } else if (option.value == 1) {
+                                    $('.js-switch-' + id[i]).find('span.switchery').attr('style', cssUnActive).find('small').attr('style', cssUnActive2)
                                 }
                             }
+
                         }
 
                     },

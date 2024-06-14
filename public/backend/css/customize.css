@@ -54,7 +54,7 @@ table strong {
     display: inline-block;
 }
 .uk-search {
-    width: 500px;
+    width: 900px;
 }
 .mr10 {
     margin-right: 10px;
@@ -80,4 +80,13 @@ table strong {
 #checkAll,.checkBoxItem {
     width: 15px;
     height: 15px;
+}
+.switchery-small {
+    border-radius: 20px;
+    height: 20px;
+    width: 33px;
+}
+.switchery-small>small {
+    height: 20px;
+    width: 20px;
 }
